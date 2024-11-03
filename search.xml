@@ -4,18 +4,17 @@
     <title>Hello World</title>
     <url>/2024/11/02/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
 <p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
 <p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
 <p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
@@ -31,111 +30,85 @@
   <entry>
     <title> CNN</title>
     <url>/2024/11/03/Deep-learning-Lhy-learning-CNN/</url>
-    <content><![CDATA[<h2 id="概述">概述</h2>
-<p>卷积神经网络（CNNs）是一类专门用于处理结构化网格数据（如图像）的神经网络。CNN通过局部连接性和参数共享来有效提取层次化的特征。</p>
-<p><span id="more"></span></p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>卷积神经网络（CNNs）是一类专门用于处理结构化网格数据（如图像）的神经网络。CNN通过局部连接性和参数共享来有效提取层次化的特征。</p>
+  <span id="more"></span>
+
 <hr>
-<h2 id="神经元与感受野">1. 神经元与感受野</h2>
-<h3 id="神经元功能的简化">1.1 神经元功能的简化</h3>
-<ul>
+<h2 id="1-神经元与感受野"><a href="#1-神经元与感受野" class="headerlink" title="1. 神经元与感受野"></a>1. 神经元与感受野</h2><h3 id="1-1-神经元功能的简化"><a href="#1-1-神经元功能的简化" class="headerlink" title="1.1 神经元功能的简化"></a>1.1 神经元功能的简化</h3><ul>
 <li>每个神经元专注于特定的<strong>感受野</strong>（Receptive Field），这种局部化特性使得神经网络可以检测局部特征，而不是处理整个图像。</li>
 </ul>
 <p>.</p>
-<h3 id="典型的卷积层设置">1.2 典型的卷积层设置</h3>
-<ul>
-<li><p><strong>通道（Channels）</strong>：输入数据通常具有多个通道（例如 RGB 图像）。</p></li>
-<li><p><strong>核大小（Kernel Size）</strong>：定义核（滤波器）的大小（例如 3x3），决定了神经元观察的图像范围。</p></li>
-<li><p><strong>神经元重叠</strong>：多个神经元可以覆盖相同的感受野，提高检测准确度。</p></li>
-<li><p><strong>步幅（Stride）</strong>：定义核如何在图像上移动，允许感受野的重叠。</p></li>
-<li><p><strong>填充（Padding）</strong>：如零填充技术确保卷积操作可以在图像边缘应用。</p></li>
+<h3 id="1-2-典型的卷积层设置"><a href="#1-2-典型的卷积层设置" class="headerlink" title="1.2 典型的卷积层设置"></a>1.2 典型的卷积层设置</h3><ul>
+<li><p><strong>通道（Channels）</strong>：输入数据通常具有多个通道（例如 RGB 图像）。</p>
+</li>
+<li><p><strong>核大小（Kernel Size）</strong>：定义核（滤波器）的大小（例如 3x3），决定了神经元观察的图像范围。</p>
+</li>
+<li><p><strong>神经元重叠</strong>：多个神经元可以覆盖相同的感受野，提高检测准确度。</p>
+</li>
+<li><p><strong>步幅（Stride）</strong>：定义核如何在图像上移动，允许感受野的重叠。</p>
+</li>
+<li><p><strong>填充（Padding）</strong>：如零填充技术确保卷积操作可以在图像边缘应用。</p>
+</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-1.png" alt="典型卷积层设置"><figcaption>典型卷积层设置</figcaption>
-</figure>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-1.png" alt="典型卷积层设置"></p>
 <hr>
-<h2 id="参数共享">2. 参数共享</h2>
-<h3 id="参数共享的效率">2.1 参数共享的效率</h3>
-<ul>
+<h2 id="2-参数共享"><a href="#2-参数共享" class="headerlink" title="2. 参数共享"></a>2. 参数共享</h2><h3 id="2-1-参数共享的效率"><a href="#2-1-参数共享的效率" class="headerlink" title="2.1 参数共享的效率"></a>2.1 参数共享的效率</h3><ul>
 <li><strong>冗余神经元</strong>：相似的感受野中可以共享参数，而不是为每一个感受野分配不同的神经元，提升了效率。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-2.png" alt="不同区域相似模式"><figcaption>不同区域相似模式</figcaption>
-</figure>
-<h3 id="共享机制">2.2 共享机制</h3>
-<ul>
-<li><p>拥有相同感受野的神经元不共享参数，允许专门化。</p></li>
-<li><p>在不同位置观察相似模式的神经元可以共享参数，降低模型大小与复杂性。</p></li>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-2.png" alt="不同区域相似模式"></p>
+<h3 id="2-2-共享机制"><a href="#2-2-共享机制" class="headerlink" title="2.2 共享机制"></a>2.2 共享机制</h3><ul>
+<li><p>拥有相同感受野的神经元不共享参数，允许专门化。</p>
+</li>
+<li><p>在不同位置观察相似模式的神经元可以共享参数，降低模型大小与复杂性。</p>
+</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-3.png" alt="参数共享"><figcaption>参数共享</figcaption>
-</figure>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-3.png" alt="参数共享"></p>
 <hr>
-<h2 id="卷积层的优点">3. 卷积层的优点</h2>
-<ul>
-<li><p><strong>局部模式检测</strong>：许多图像中的模式都比整个图像小，卷积层可专注于局部特征。</p></li>
-<li><p><strong>平移不变性</strong>：相同的模式可在图像不同部分出现，增强网络的泛化能力。</p></li>
-<li><p><strong>降低过拟合</strong>：卷积层通常比全连接层参数更少，降低了过拟合的风险。</p></li>
-<li><p><strong>图像专用</strong>：专为图像与视频数据设计，卷积层可以更有效地提取特征。</p></li>
+<h2 id="3-卷积层的优点"><a href="#3-卷积层的优点" class="headerlink" title="3. 卷积层的优点"></a>3. 卷积层的优点</h2><ul>
+<li><p><strong>局部模式检测</strong>：许多图像中的模式都比整个图像小，卷积层可专注于局部特征。</p>
+</li>
+<li><p><strong>平移不变性</strong>：相同的模式可在图像不同部分出现，增强网络的泛化能力。</p>
+</li>
+<li><p><strong>降低过拟合</strong>：卷积层通常比全连接层参数更少，降低了过拟合的风险。</p>
+</li>
+<li><p><strong>图像专用</strong>：专为图像与视频数据设计，卷积层可以更有效地提取特征。</p>
+</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-5.png" alt="卷积层的优点"><figcaption>卷积层的优点</figcaption>
-</figure>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-5.png" alt="卷积层的优点"></p>
 <hr>
-<h2 id="池化层">4. 池化层</h2>
-<h3 id="池化的目的">4.1 池化的目的</h3>
-<ul>
-<li><p>池化层减少特征图的维度，帮助保留重要特征，同时降低计算负担。 ### 4.2 池化类型</p></li>
-<li><p><strong>最大池化（Max Pooling）</strong>：从定义的窗口中选择最大值，保留关键特征并缩小尺寸。</p></li>
+<h2 id="4-池化层"><a href="#4-池化层" class="headerlink" title="4. 池化层"></a>4. 池化层</h2><h3 id="4-1-池化的目的"><a href="#4-1-池化的目的" class="headerlink" title="4.1 池化的目的"></a>4.1 池化的目的</h3><ul>
+<li>池化层减少特征图的维度，帮助保留重要特征，同时降低计算负担。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-12.png" alt="池化"><figcaption>池化</figcaption>
-</figure>
+<h3 id="4-2-池化类型"><a href="#4-2-池化类型" class="headerlink" title="4.2 池化类型"></a>4.2 池化类型</h3><ul>
+<li><strong>最大池化（Max Pooling）</strong>：从定义的窗口中选择最大值，保留关键特征并缩小尺寸。</li>
+</ul>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-12.png" alt="池化"></p>
 <hr>
-<h2 id="cnn的结构">5. CNN的结构</h2>
-<h3 id="架构">5.1 架构</h3>
-<ul>
+<h2 id="5-CNN的结构"><a href="#5-CNN的结构" class="headerlink" title="5. CNN的结构"></a>5. CNN的结构</h2><h3 id="5-1-架构"><a href="#5-1-架构" class="headerlink" title="5.1 架构"></a>5.1 架构</h3><ul>
 <li>一个典型的CNN由交替的卷积和池化层组成，最后是全连接层，根据提取的特征进行分类。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-13.png" alt="完整的CNN"><figcaption>完整的CNN</figcaption>
-</figure>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-13.png" alt="完整的CNN"></p>
 <hr>
-<h2 id="滤波器与特征图">6. 滤波器与特征图</h2>
-<h3 id="滤波器filters">6.1 滤波器（Filters）</h3>
-<ul>
+<h2 id="6-滤波器与特征图"><a href="#6-滤波器与特征图" class="headerlink" title="6. 滤波器与特征图"></a>6. 滤波器与特征图</h2><h3 id="6-1-滤波器（Filters）"><a href="#6-1-滤波器（Filters）" class="headerlink" title="6.1 滤波器（Filters）"></a>6.1 滤波器（Filters）</h3><ul>
 <li>滤波器是CNN的核心组件，每个滤波器设计用于检测局部区域中的特定模式（例如跨越所有通道的3x3像素区域）。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-6.png" alt="滤波器"><figcaption>滤波器</figcaption>
-</figure>
-<h3 id="生成特征图">6.2 生成特征图</h3>
-<ul>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-6.png" alt="滤波器"></p>
+<h3 id="6-2-生成特征图"><a href="#6-2-生成特征图" class="headerlink" title="6.2 生成特征图"></a>6.2 生成特征图</h3><ul>
 <li>每个滤波器在输入图像上进行卷积，生成<strong>特征图</strong>，显示特定模式在图像中的分布。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-8.png" alt="特征图"><figcaption>特征图</figcaption>
-</figure>
-<h3 id="层次特征学习">6.3 层次特征学习</h3>
-<ul>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-8.png" alt="特征图"></p>
+<h3 id="6-3-层次特征学习"><a href="#6-3-层次特征学习" class="headerlink" title="6.3 层次特征学习"></a>6.3 层次特征学习</h3><ul>
 <li>随着网络加深，滤波器能够捕捉到更复杂的模式，使模型学习更高级的特征。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-9.png" alt="更深层的特征"><figcaption>更深层的特征</figcaption>
-</figure>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-9.png" alt="更深层的特征"></p>
 <hr>
-<h2 id="神经元与滤波器功能的比较">7. 神经元与滤波器功能的比较</h2>
-<ul>
+<h2 id="7-神经元与滤波器功能的比较"><a href="#7-神经元与滤波器功能的比较" class="headerlink" title="7. 神经元与滤波器功能的比较"></a>7. 神经元与滤波器功能的比较</h2><ul>
 <li>具有不同感受野且共享参数的神经元的工作方式类似于滤波器在输入图像上进行卷积，这种设计结合了参数共享与局部特征检测的优势。</li>
 </ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-10.png" alt="参数共享与滤波器卷积"><figcaption>参数共享与滤波器卷积</figcaption>
-</figure>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-10.png" alt="参数共享与滤波器卷积"></p>
 <hr>
-<h2 id="总结">8. 总结</h2>
-<p>卷积神经网络（CNNs）是一种适用于图像处理的强大架构，利用局部化检测、参数共享和层次特征提取，在图像分类和物体检测等任务中表现优异。</p>
-<figure>
-<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-11.png" alt="比较表"><figcaption>比较表</figcaption>
-</figure>
+<h2 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a>8. 总结</h2><p>卷积神经网络（CNNs）是一种适用于图像处理的强大架构，利用局部化检测、参数共享和层次特征提取，在图像分类和物体检测等任务中表现优异。</p>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-11.png" alt="比较表"></p>
 ]]></content>
       <categories>
         <category>Deep-learning</category>
