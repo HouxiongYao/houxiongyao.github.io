@@ -4,8 +4,7 @@
     <title> CNN</title>
     <url>/2024/11/03/Deep-learning-Lhy-learning-CNN/</url>
     <content><![CDATA[<h2 id="概述">概述</h2>
-<p>卷积神经网络（CNNs）是一类专门用于处理结构化网格数据（如图像）的神经网络。CNN通过局部连接性和参数共享来有效提取层次化的特征。</p>
-<p><span id="more"></span></p>
+<p>卷积神经网络（CNNs）是一类专门用于处理结构化网格数据（如图像）的神经网络。CNN通过局部连接性和参数共享来有效提取层次化的特征。 <span id="more"></span></p>
 <hr>
 <h2 id="神经元与感受野">1. 神经元与感受野</h2>
 <h3 id="神经元功能的简化">1.1 神经元功能的简化</h3>
@@ -56,8 +55,11 @@
 <h2 id="池化层">4. 池化层</h2>
 <h3 id="池化的目的">4.1 池化的目的</h3>
 <ul>
-<li><p>池化层减少特征图的维度，帮助保留重要特征，同时降低计算负担。 ### 4.2 池化类型</p></li>
-<li><p><strong>最大池化（Max Pooling）</strong>：从定义的窗口中选择最大值，保留关键特征并缩小尺寸。</p></li>
+<li>池化层减少特征图的维度，帮助保留重要特征，同时降低计算负担。</li>
+</ul>
+<h3 id="池化类型">4.2 池化类型</h3>
+<ul>
+<li><strong>最大池化（Max Pooling）</strong>：从定义的窗口中选择最大值，保留关键特征并缩小尺寸。</li>
 </ul>
 <figure>
 <img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/image-12.png" alt="池化"><figcaption>池化</figcaption>
@@ -118,9 +120,48 @@
       </tags>
   </entry>
   <entry>
+    <title>Self Attention</title>
+    <url>/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/</url>
+    <content><![CDATA[<h1 id="自注意力机制self-attention">自注意力机制（Self Attention）</h1>
+<span id="more"></span>
+<h2 id="输入的向量集">输入的向量集</h2>
+<ul>
+<li>One-hot 编码</li>
+<li>词嵌入 (word embedding) ## 输出</li>
+<li>每个向量对应一个标签（序列标注）</li>
+<li>整个序列有一个标签</li>
+<li>模型可以自行决定标签数量（seq2seq）</li>
+</ul>
+<h2 id="序列标注-sequence-labeling">序列标注 (Sequence Labeling)</h2>
+<ul>
+<li>可以考虑上下文信息</li>
+<li>将整个序列放在一个窗口中计算可能会消耗大量资源</li>
+</ul>
+<h2 id="自注意力机制-self-attention">自注意力机制 (Self-attention)</h2>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-new.png" alt="自注意力机制"><figcaption>自注意力机制</figcaption>
+</figure>
+<ul>
+<li>找到与 <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="2.185ex" height="1.909ex" role="img" focusable="false" viewbox="0 -833.9 965.6 843.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"/></g><g data-mml-node="mn" transform="translate(562,363) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"/></g></g></g></g></svg></mjx-container></span> 相关的向量，用 <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.448ex" height="1.025ex" role="img" focusable="false" viewbox="0 -442 640 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D6FC" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"/></g></g></g></svg></mjx-container></span> 表示相关向量 <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-1-new.png" alt="相关向量"></li>
+<li>使用点积 (Dot-product) 和加法 (Additive) 来计算 <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-2-new.png" alt="计算方法"></li>
+<li>也可以使用其他函数如 ReLU <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-3-new.png" alt="处理过程"> <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-4-new.png" alt="得到 b1"></li>
+</ul>
+<h3 id="矩阵描述">矩阵描述</h3>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-5-new.png" alt="如何得到 q、k、v">[<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-7-new.png" alt="得到注意力分数">![<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-8-new.png" alt="得到 b">![<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-9-new.png" alt="总结"></p>
+]]></content>
+      <categories>
+        <category>Deep-learning</category>
+        <category>Lhy-learning</category>
+      </categories>
+      <tags>
+        <tag>deep-learning-notes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Lhy-HW3</title>
     <url>/2024/11/03/Deep-learning-Projects-Lhy-HW3/</url>
     <content><![CDATA[<h1 id="hw3">HW3</h1>
+<p><span id="more"></span></p>
 <h2 id="任务分析">任务分析</h2>
 <ul>
 <li><p>本次作业要求对food11进行分类</p></li>
@@ -128,7 +169,7 @@
 <li><p>Simple: 0.50099</p></li>
 <li><p>Medium: 0.73207 - Training augmentation + longer training</p></li>
 <li><p>Strong: 0.81872 - Training augmentation + model design + extended training (+ cross-validation + ensemble)</p></li>
-<li><p>Boss: 0.88446 - Training augmentation + model design + test-time augmentation + extended training (+ cross-validation + ensemble) <span id="more"></span></p></li>
+<li><p>Boss: 0.88446 - Training augmentation + model design + test-time augmentation + extended training (+ cross-validation + ensemble)</p></li>
 </ul>
 <h2 id="完成细节">完成细节</h2>
 <h3 id="模型">模型</h3>
@@ -150,7 +191,7 @@
 <li><p>resnet达到了StrongLine</p></li>
 <li><p>resnet18达到了BossLine</p></li>
 </ul>
-<p><img src="/2024/11/03/Deep-learning-Projects-Lhy-HW3/image.png"></p>
+<p><img src="/2024/11/03/Deep-learning-Projects-Lhy-HW3/source/_posts/Deep-learning/Projects/Lhy-HW3/image.png"></p>
 <p><a href="https://github.com/HouxiongYao/Deep-Learning-Projects">完整代码在这里</a></p>
 ]]></content>
       <categories>

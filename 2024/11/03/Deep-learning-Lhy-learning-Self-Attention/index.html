@@ -22,22 +22,30 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="HW3">
+  <meta name="description" content="自注意力机制（Self Attention）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lhy-HW3">
-<meta property="og:url" content="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/index.html">
+<meta property="og:title" content="Self Attention">
+<meta property="og:url" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/index.html">
 <meta property="og:site_name" content="熊熊学习乐园">
-<meta property="og:description" content="HW3">
+<meta property="og:description" content="自注意力机制（Self Attention）">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/source/_posts/Deep-learning/Projects/Lhy-HW3/image.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-1-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-2-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-3-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-4-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-5-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-7-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-8-new.png">
+<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-9-new.png">
 <meta property="article:published_time" content="2024-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-03T08:26:11.626Z">
+<meta property="article:modified_time" content="2024-11-03T08:49:09.923Z">
 <meta property="article:author" content="Houxiong">
-<meta property="article:tag" content="Lhy-Projects">
+<meta property="article:tag" content="deep-learning-notes">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/source/_posts/Deep-learning/Projects/Lhy-HW3/image.png">
+<meta name="twitter:image" content="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-new.png">
 
-<link rel="canonical" href="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/">
+<link rel="canonical" href="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/">
 
 
 <script id="page-configurations">
@@ -50,7 +58,7 @@
   };
 </script>
 
-  <title>Lhy-HW3 | 熊熊学习乐园</title>
+  <title>Self Attention | 熊熊学习乐园</title>
   
 
 
@@ -81,7 +89,119 @@
   </style>
 </noscript>
 
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -173,7 +293,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -186,7 +306,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Lhy-HW3
+          Self Attention
         </h1>
 
         <div class="post-meta">
@@ -197,7 +317,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-11-03 00:00:00 / 修改时间：16:26:11" itemprop="dateCreated datePublished" datetime="2024-11-03T00:00:00+08:00">2024-11-03</time>
+              <time title="创建时间：2024-11-03 00:00:00 / 修改时间：16:49:09" itemprop="dateCreated datePublished" datetime="2024-11-03T00:00:00+08:00">2024-11-03</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,7 +329,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/Projects/" itemprop="url" rel="index"><span itemprop="name">Projects</span></a>
+                  <a href="/categories/Deep-learning/Lhy-learning/" itemprop="url" rel="index"><span itemprop="name">Lhy-learning</span></a>
                 </span>
             </span>
 
@@ -224,39 +344,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="hw3">HW3</h1>
-<p><span id="more"></span></p>
-<h2 id="任务分析">任务分析</h2>
+        <h1 id="自注意力机制self-attention">自注意力机制（Self Attention）</h1>
+<span id="more"></span>
+<h2 id="输入的向量集">输入的向量集</h2>
 <ul>
-<li><p>本次作业要求对food11进行分类</p></li>
-<li><p>作业的分数细则如下：</p></li>
-<li><p>Simple: 0.50099</p></li>
-<li><p>Medium: 0.73207 - Training augmentation + longer training</p></li>
-<li><p>Strong: 0.81872 - Training augmentation + model design + extended training (+ cross-validation + ensemble)</p></li>
-<li><p>Boss: 0.88446 - Training augmentation + model design + test-time augmentation + extended training (+ cross-validation + ensemble)</p></li>
+<li>One-hot 编码</li>
+<li>词嵌入 (word embedding) ## 输出</li>
+<li>每个向量对应一个标签（序列标注）</li>
+<li>整个序列有一个标签</li>
+<li>模型可以自行决定标签数量（seq2seq）</li>
 </ul>
-<h2 id="完成细节">完成细节</h2>
-<h3 id="模型">模型</h3>
+<h2 id="序列标注-sequence-labeling">序列标注 (Sequence Labeling)</h2>
 <ul>
-<li><p>resnet18，按照李沐动手学深度学习教程搭建。</p></li>
-<li><p>resnet，用了两层残差块，然后接全连接层</p></li>
+<li>可以考虑上下文信息</li>
+<li>将整个序列放在一个窗口中计算可能会消耗大量资源</li>
 </ul>
-<h3 id="训练设置">训练设置</h3>
+<h2 id="自注意力机制-self-attention">自注意力机制 (Self-attention)</h2>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-new.png" alt="自注意力机制"><figcaption>自注意力机制</figcaption>
+</figure>
 <ul>
-<li><p>resnet中采用StepLRScheduler，训练100 epochs，前50轮学习率为3e-4，后50轮为3e-5</p></li>
-<li><p>resnet18采用余弦退火策略，200epochs，T_MAX设置为200，学习率按余弦从3e-4减小到3e-7</p></li>
-<li><p>均采用5折交叉验证</p></li>
-<li><p>resnet18只训练出四个模型</p></li>
-<li><p>batch_size都设置为64</p></li>
-<li><p>采用FocalLoss，根据resnet对各个类别的分类情况调整了alpha系数</p></li>
+<li>找到与 <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="2.185ex" height="1.909ex" role="img" focusable="false" viewbox="0 -833.9 965.6 843.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"/></g><g data-mml-node="mn" transform="translate(562,363) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"/></g></g></g></g></svg></mjx-container></span> 相关的向量，用 <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.448ex" height="1.025ex" role="img" focusable="false" viewbox="0 -442 640 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D6FC" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"/></g></g></g></svg></mjx-container></span> 表示相关向量 <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-1-new.png" alt="相关向量"></li>
+<li>使用点积 (Dot-product) 和加法 (Additive) 来计算 <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-2-new.png" alt="计算方法"></li>
+<li>也可以使用其他函数如 ReLU <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-3-new.png" alt="处理过程"> <img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-4-new.png" alt="得到 b1"></li>
 </ul>
-<h2 id="结果">结果</h2>
-<ul>
-<li><p>resnet达到了StrongLine</p></li>
-<li><p>resnet18达到了BossLine</p></li>
-</ul>
-<p><img src="/2024/11/03/Deep-learning-Projects-Lhy-HW3/source/_posts/Deep-learning/Projects/Lhy-HW3/image.png"></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/HouxiongYao/Deep-Learning-Projects">完整代码在这里</a></p>
+<h3 id="矩阵描述">矩阵描述</h3>
+<p><img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-5-new.png" alt="如何得到 q、k、v">[<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-7-new.png" alt="得到注意力分数">![<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-8-new.png" alt="得到 b">![<img src="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/image-9-new.png" alt="总结"></p>
 
     </div>
 
@@ -266,7 +379,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Lhy-Projects/" rel="tag"># Lhy-Projects</a>
+              <a href="/tags/deep-learning-notes/" rel="tag"># deep-learning-notes</a>
           </div>
 
         
@@ -274,10 +387,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2024/11/03/Deep-learning-Lhy-learning-Self-Attention/" rel="next" title="Self Attention">
-      Self Attention <i class="fa fa-chevron-right"></i>
+    <a href="/2024/11/03/Deep-learning-Projects-Lhy-HW3/" rel="prev" title="Lhy-HW3">
+      <i class="fa fa-chevron-left"></i> Lhy-HW3
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/03/Deep-learning-Lhy-learning-CNN/" rel="next" title=" CNN">
+       CNN <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -337,7 +453,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hw3"><span class="nav-number">1.</span> <span class="nav-text">HW3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">任务分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E7%BB%86%E8%8A%82"><span class="nav-number">1.2.</span> <span class="nav-text">完成细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">训练设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">1.3.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6self-attention"><span class="nav-number">1.</span> <span class="nav-text">自注意力机制（Self Attention）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E7%9A%84%E5%90%91%E9%87%8F%E9%9B%86"><span class="nav-number">1.1.</span> <span class="nav-text">输入的向量集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8-sequence-labeling"><span class="nav-number">1.2.</span> <span class="nav-text">序列标注 (Sequence Labeling)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6-self-attention"><span class="nav-number">1.3.</span> <span class="nav-text">自注意力机制 (Self-attention)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">矩阵描述</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -452,6 +568,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
