@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>TRY</title>
-    <url>/2024/11/03/Deep-learning-TRY/</url>
-    <content><![CDATA[<p><img src="/2024/11/03/Deep-learning-TRY/image-20241103-132141.png"></p>
-]]></content>
-      <categories>
-        <category>Deep-learning</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2024/11/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title> CNN</title>
     <url>/2024/11/03/Deep-learning-Lhy-learning-CNN/</url>
     <content><![CDATA[<h2 id="概述">概述</h2>
@@ -141,5 +113,49 @@
         <category>Deep-learning</category>
         <category>Lhy-learning</category>
       </categories>
+      <tags>
+        <tag>deep-learning-notes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lhy-HW3</title>
+    <url>/2024/11/03/Deep-learning-Projects-Lhy-HW3/</url>
+    <content><![CDATA[<span id="more"></span>
+<h1 id="hw3">HW3</h1>
+<h2 id="任务分析">任务分析</h2>
+<ul>
+<li><p>本次作业要求对food11进行分类</p></li>
+<li><p>作业的分数细则如下：</p></li>
+<li><p>Simple: 0.50099</p></li>
+<li><p>Medium: 0.73207 - Training augmentation + longer training</p></li>
+<li><p>Strong: 0.81872 - Training augmentation + model design + extended training (+ cross-validation + ensemble)</p></li>
+<li><p>Boss: 0.88446 - Training augmentation + model design + test-time augmentation + extended training (+ cross-validation + ensemble)</p></li>
+</ul>
+<h2 id="完成细节">完成细节</h2>
+<h3 id="模型">模型</h3>
+<ul>
+<li><p>resnet18，按照李沐动手学深度学习教程搭建。</p></li>
+<li><p>resnet，用了两层残差块，然后接全连接层</p></li>
+</ul>
+<h3 id="训练设置">训练设置</h3>
+<ul>
+<li><p>resnet中采用StepLRScheduler，训练100 epochs，前50轮学习率为3e-4，后50轮为3e-5</p></li>
+<li><p>resnet18采用余弦退火策略，200epochs，T_MAX设置为200，学习率按余弦从3e-4减小到3e-7</p></li>
+<li><p>均采用5折交叉验证</p></li>
+<li><p>resnet18只训练出四个模型</p></li>
+<li><p>batch_size都设置为64</p></li>
+<li><p>采用FocalLoss，根据resnet对各个类别的分类情况调整了alpha系数</p></li>
+</ul>
+<h2 id="结果">结果</h2>
+<ul>
+<li><p>resnet达到了StrongLine</p></li>
+<li><p>resnet18达到了BossLine</p></li>
+</ul>
+<p><img src="/2024/11/03/Deep-learning-Projects-Lhy-HW3/image.png"></p>
+<p><a href="https://github.com/HouxiongYao/Deep-Learning-Projects">完整代码在这里</a></p>
+]]></content>
+      <tags>
+        <tag>Lhy-Projects</tag>
+      </tags>
   </entry>
 </search>
