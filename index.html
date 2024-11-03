@@ -163,182 +163,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/03/Deep-learning-CNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/03/Deep-learning-CNN/" class="post-title-link" itemprop="url"> CNN</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-11-03 00:00:00 / 修改时间：13:28:48" itemprop="dateCreated datePublished" datetime="2024-11-03T00:00:00+08:00">2024-11-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述">概述</h2>
-<p>卷积神经网络（CNNs）是一类专门用于处理结构化网格数据（如图像）的神经网络。CNN通过局部连接性和参数共享来有效提取层次化的特征。</p>
-<hr>
-<h2 id="神经元与感受野">1. 神经元与感受野</h2>
-<h3 id="神经元功能的简化">1.1 神经元功能的简化</h3>
-<ul>
-<li>每个神经元专注于特定的<strong>感受野</strong>（Receptive Field），这种局部化特性使得神经网络可以检测局部特征，而不是处理整个图像。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image.png" alt="感受野"><figcaption>感受野</figcaption>
-</figure>
-<h3 id="典型的卷积层设置">1.2 典型的卷积层设置</h3>
-<ul>
-<li><strong>通道（Channels）</strong>：输入数据通常具有多个通道（例如 RGB 图像）。</li>
-<li><strong>核大小（Kernel Size）</strong>：定义核（滤波器）的大小（例如 3x3），决定了神经元观察的图像范围。</li>
-<li><strong>神经元重叠</strong>：多个神经元可以覆盖相同的感受野，提高检测准确度。</li>
-<li><strong>步幅（Stride）</strong>：定义核如何在图像上移动，允许感受野的重叠。</li>
-<li><strong>填充（Padding）</strong>：如零填充技术确保卷积操作可以在图像边缘应用。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-1.png" alt="典型卷积层设置"><figcaption>典型卷积层设置</figcaption>
-</figure>
-<hr>
-<h2 id="参数共享">2. 参数共享</h2>
-<h3 id="参数共享的效率">2.1 参数共享的效率</h3>
-<ul>
-<li><strong>冗余神经元</strong>：相似的感受野中可以共享参数，而不是为每一个感受野分配不同的神经元，提升了效率。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-2.png" alt="不同区域相似模式"><figcaption>不同区域相似模式</figcaption>
-</figure>
-<h3 id="共享机制">2.2 共享机制</h3>
-<ul>
-<li>拥有相同感受野的神经元不共享参数，允许专门化。</li>
-<li>在不同位置观察相似模式的神经元可以共享参数，降低模型大小与复杂性。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-3.png" alt="参数共享"><figcaption>参数共享</figcaption>
-</figure>
-<hr>
-<h2 id="卷积层的优点">3. 卷积层的优点</h2>
-<ul>
-<li><strong>局部模式检测</strong>：许多图像中的模式都比整个图像小，卷积层可专注于局部特征。</li>
-<li><strong>平移不变性</strong>：相同的模式可在图像不同部分出现，增强网络的泛化能力。</li>
-<li><strong>降低过拟合</strong>：卷积层通常比全连接层参数更少，降低了过拟合的风险。</li>
-<li><strong>图像专用</strong>：专为图像与视频数据设计，卷积层可以更有效地提取特征。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-5.png" alt="卷积层的优点"><figcaption>卷积层的优点</figcaption>
-</figure>
-<hr>
-<h2 id="池化层">4. 池化层</h2>
-<h3 id="池化的目的">4.1 池化的目的</h3>
-<ul>
-<li>池化层减少特征图的维度，帮助保留重要特征，同时降低计算负担。</li>
-</ul>
-<h3 id="池化类型">4.2 池化类型</h3>
-<ul>
-<li><strong>最大池化（Max Pooling）</strong>：从定义的窗口中选择最大值，保留关键特征并缩小尺寸。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-12.png" alt="池化"><figcaption>池化</figcaption>
-</figure>
-<hr>
-<h2 id="cnn的结构">5. CNN的结构</h2>
-<h3 id="架构">5.1 架构</h3>
-<ul>
-<li>一个典型的CNN由交替的卷积和池化层组成，最后是全连接层，根据提取的特征进行分类。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-13.png" alt="完整的CNN"><figcaption>完整的CNN</figcaption>
-</figure>
-<hr>
-<h2 id="滤波器与特征图">6. 滤波器与特征图</h2>
-<h3 id="滤波器filters">6.1 滤波器（Filters）</h3>
-<ul>
-<li>滤波器是CNN的核心组件，每个滤波器设计用于检测局部区域中的特定模式（例如跨越所有通道的3x3像素区域）。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-6.png" alt="滤波器"><figcaption>滤波器</figcaption>
-</figure>
-<h3 id="生成特征图">6.2 生成特征图</h3>
-<ul>
-<li>每个滤波器在输入图像上进行卷积，生成<strong>特征图</strong>，显示特定模式在图像中的分布。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-8.png" alt="特征图"><figcaption>特征图</figcaption>
-</figure>
-<h3 id="层次特征学习">6.3 层次特征学习</h3>
-<ul>
-<li>随着网络加深，滤波器能够捕捉到更复杂的模式，使模型学习更高级的特征。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/source/_posts/Deep-learning/CNN/image-9.png" alt="更深层的特征"><figcaption>更深层的特征</figcaption>
-</figure>
-<hr>
-<h2 id="神经元与滤波器功能的比较">7. 神经元与滤波器功能的比较</h2>
-<ul>
-<li>具有不同感受野且共享参数的神经元的工作方式类似于滤波器在输入图像上进行卷积，这种设计结合了参数共享与局部特征检测的优势。</li>
-</ul>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-10.png" alt="参数共享与滤波器卷积"><figcaption>参数共享与滤波器卷积</figcaption>
-</figure>
-<hr>
-<h2 id="总结">8. 总结</h2>
-<p>卷积神经网络（CNNs）是一种适用于图像处理的强大架构，利用局部化检测、参数共享和层次特征提取，在图像分类和物体检测等任务中表现优异。</p>
-<figure>
-<img src="/2024/11/03/Deep-learning-CNN/image-11.png" alt="比较表"><figcaption>比较表</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/03/Deep-learning-TRY/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -388,6 +212,186 @@
 
       
           <p><img src="/2024/11/03/Deep-learning-TRY/image-20241103-132141.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/03/Deep-learning-Lhy-learning-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/11/03/Deep-learning-Lhy-learning-CNN/" class="post-title-link" itemprop="url"> CNN</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-03 00:00:00 / 修改时间：13:33:07" itemprop="dateCreated datePublished" datetime="2024-11-03T00:00:00+08:00">2024-11-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/Lhy-learning/" itemprop="url" rel="index"><span itemprop="name">Lhy-learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述">概述</h2>
+<p>卷积神经网络（CNNs）是一类专门用于处理结构化网格数据（如图像）的神经网络。CNN通过局部连接性和参数共享来有效提取层次化的特征。</p>
+<hr>
+<h2 id="神经元与感受野">1. 神经元与感受野</h2>
+<h3 id="神经元功能的简化">1.1 神经元功能的简化</h3>
+<ul>
+<li>每个神经元专注于特定的<strong>感受野</strong>（Receptive Field），这种局部化特性使得神经网络可以检测局部特征，而不是处理整个图像。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image.png" alt="感受野"><figcaption>感受野</figcaption>
+</figure>
+<h3 id="典型的卷积层设置">1.2 典型的卷积层设置</h3>
+<ul>
+<li><strong>通道（Channels）</strong>：输入数据通常具有多个通道（例如 RGB 图像）。</li>
+<li><strong>核大小（Kernel Size）</strong>：定义核（滤波器）的大小（例如 3x3），决定了神经元观察的图像范围。</li>
+<li><strong>神经元重叠</strong>：多个神经元可以覆盖相同的感受野，提高检测准确度。</li>
+<li><strong>步幅（Stride）</strong>：定义核如何在图像上移动，允许感受野的重叠。</li>
+<li><strong>填充（Padding）</strong>：如零填充技术确保卷积操作可以在图像边缘应用。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-1.png" alt="典型卷积层设置"><figcaption>典型卷积层设置</figcaption>
+</figure>
+<hr>
+<h2 id="参数共享">2. 参数共享</h2>
+<h3 id="参数共享的效率">2.1 参数共享的效率</h3>
+<ul>
+<li><strong>冗余神经元</strong>：相似的感受野中可以共享参数，而不是为每一个感受野分配不同的神经元，提升了效率。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-2.png" alt="不同区域相似模式"><figcaption>不同区域相似模式</figcaption>
+</figure>
+<h3 id="共享机制">2.2 共享机制</h3>
+<ul>
+<li>拥有相同感受野的神经元不共享参数，允许专门化。</li>
+<li>在不同位置观察相似模式的神经元可以共享参数，降低模型大小与复杂性。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-3.png" alt="参数共享"><figcaption>参数共享</figcaption>
+</figure>
+<hr>
+<h2 id="卷积层的优点">3. 卷积层的优点</h2>
+<ul>
+<li><strong>局部模式检测</strong>：许多图像中的模式都比整个图像小，卷积层可专注于局部特征。</li>
+<li><strong>平移不变性</strong>：相同的模式可在图像不同部分出现，增强网络的泛化能力。</li>
+<li><strong>降低过拟合</strong>：卷积层通常比全连接层参数更少，降低了过拟合的风险。</li>
+<li><strong>图像专用</strong>：专为图像与视频数据设计，卷积层可以更有效地提取特征。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-5.png" alt="卷积层的优点"><figcaption>卷积层的优点</figcaption>
+</figure>
+<hr>
+<h2 id="池化层">4. 池化层</h2>
+<h3 id="池化的目的">4.1 池化的目的</h3>
+<ul>
+<li>池化层减少特征图的维度，帮助保留重要特征，同时降低计算负担。</li>
+</ul>
+<h3 id="池化类型">4.2 池化类型</h3>
+<ul>
+<li><strong>最大池化（Max Pooling）</strong>：从定义的窗口中选择最大值，保留关键特征并缩小尺寸。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-12.png" alt="池化"><figcaption>池化</figcaption>
+</figure>
+<hr>
+<h2 id="cnn的结构">5. CNN的结构</h2>
+<h3 id="架构">5.1 架构</h3>
+<ul>
+<li>一个典型的CNN由交替的卷积和池化层组成，最后是全连接层，根据提取的特征进行分类。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-13.png" alt="完整的CNN"><figcaption>完整的CNN</figcaption>
+</figure>
+<hr>
+<h2 id="滤波器与特征图">6. 滤波器与特征图</h2>
+<h3 id="滤波器filters">6.1 滤波器（Filters）</h3>
+<ul>
+<li>滤波器是CNN的核心组件，每个滤波器设计用于检测局部区域中的特定模式（例如跨越所有通道的3x3像素区域）。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-6.png" alt="滤波器"><figcaption>滤波器</figcaption>
+</figure>
+<h3 id="生成特征图">6.2 生成特征图</h3>
+<ul>
+<li>每个滤波器在输入图像上进行卷积，生成<strong>特征图</strong>，显示特定模式在图像中的分布。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-8.png" alt="特征图"><figcaption>特征图</figcaption>
+</figure>
+<h3 id="层次特征学习">6.3 层次特征学习</h3>
+<ul>
+<li>随着网络加深，滤波器能够捕捉到更复杂的模式，使模型学习更高级的特征。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-9.png" alt="更深层的特征"><figcaption>更深层的特征</figcaption>
+</figure>
+<hr>
+<h2 id="神经元与滤波器功能的比较">7. 神经元与滤波器功能的比较</h2>
+<ul>
+<li>具有不同感受野且共享参数的神经元的工作方式类似于滤波器在输入图像上进行卷积，这种设计结合了参数共享与局部特征检测的优势。</li>
+</ul>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-10.png" alt="参数共享与滤波器卷积"><figcaption>参数共享与滤波器卷积</figcaption>
+</figure>
+<hr>
+<h2 id="总结">8. 总结</h2>
+<p>卷积神经网络（CNNs）是一种适用于图像处理的强大架构，利用局部化检测、参数共享和层次特征提取，在图像分类和物体检测等任务中表现优异。</p>
+<figure>
+<img src="/2024/11/03/Deep-learning-Lhy-learning-CNN/source/_posts/Deep-learning/Lhy-learning/CNN/image-11.png" alt="比较表"><figcaption>比较表</figcaption>
+</figure>
 
       
     </div>
@@ -554,7 +558,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>
