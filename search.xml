@@ -184,9 +184,7 @@
 <p>然而，除了调整学习率，还可以直接改变误差曲面的形状，通过对输入特征进行归一化，让各个方向上的变化更加一致。这种方法能使得模型的各个方向上对误差的敏感性相似，进而加快收敛速度。</p>
 <h3 id="特征归一化的方法">特征归一化的方法</h3>
 <p>一种常用的特征归一化方法是标准化（Standardization），即让每个特征维度的均值为 0，方差为 1，使其类似于标准正态分布：</p>
-<figure>
-<img src="/2024/11/04/Deep-learning-Lhy-learning-Training-Tricks/image-20241104-155627.png" alt="Feature Normalization|475"><figcaption>Feature Normalization|475</figcaption>
-</figure>
+<p><img src="/2024/11/04/Deep-learning-Lhy-learning-Training-Tricks/image-20241104-155627.png"></p>
 <blockquote>
 <p>注：激活函数前后的归一化效果差异通常不大。</p>
 </blockquote>
@@ -205,6 +203,10 @@
 <img src="/2024/11/04/Deep-learning-Lhy-learning-Training-Tricks/image-20241104-161554.png" alt="Batch Normalization Testing|450"><figcaption>Batch Normalization Testing|450</figcaption>
 </figure>
 ]]></content>
+      <categories>
+        <category>Deep-learning</category>
+        <category>Lhy-learning</category>
+      </categories>
       <tags>
         <tag>deep-learning-notes</tag>
       </tags>
