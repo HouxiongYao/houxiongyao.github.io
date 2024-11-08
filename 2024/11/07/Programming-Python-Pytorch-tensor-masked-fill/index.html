@@ -23,22 +23,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="HW3">
+  <meta name="description" content="mask_fill 是 PyTorch 中的一个函数，用于根据给定的条件（掩码）对张量中的元素进行填充。掩码是一个布尔值张量，指示哪些元素需要被填充。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lhy-HW3">
-<meta property="og:url" content="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/index.html">
+<meta property="og:title" content="tensor.masked_fill">
+<meta property="og:url" content="http://example.com/2024/11/07/Programming-Python-Pytorch-tensor-masked-fill/index.html">
 <meta property="og:site_name" content="熊熊学习乐园">
-<meta property="og:description" content="HW3">
+<meta property="og:description" content="mask_fill 是 PyTorch 中的一个函数，用于根据给定的条件（掩码）对张量中的元素进行填充。掩码是一个布尔值张量，指示哪些元素需要被填充。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/image.png">
-<meta property="article:published_time" content="2024-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-04T03:22:35.939Z">
+<meta property="article:published_time" content="2024-11-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-11-08T11:15:27.456Z">
 <meta property="article:author" content="Houxiong">
-<meta property="article:tag" content="Lhy-Projects">
+<meta property="article:tag" content="pytorch-function">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/image.png">
 
-<link rel="canonical" href="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/">
+<link rel="canonical" href="http://example.com/2024/11/07/Programming-Python-Pytorch-tensor-masked-fill/">
 
 
 <script id="page-configurations">
@@ -51,7 +49,7 @@
   };
 </script>
 
-  <title>Lhy-HW3 | 熊熊学习乐园</title>
+  <title>tensor.masked_fill | 熊熊学习乐园</title>
   
 
 
@@ -82,7 +80,119 @@
   </style>
 </noscript>
 
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -174,7 +284,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/03/Deep-learning-Projects-Lhy-HW3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/07/Programming-Python-Pytorch-tensor-masked-fill/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -187,7 +297,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Lhy-HW3
+          tensor.masked_fill
         </h1>
 
         <div class="post-meta">
@@ -197,14 +307,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-03T00:00:00+08:00">2024-11-03</time>
+              <time title="创建时间：2024-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-07T00:00:00+08:00">2024-11-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-04 11:22:35" itemprop="dateModified" datetime="2024-11-04T11:22:35+08:00">2024-11-04</time>
+                <time title="修改时间：2024-11-08 19:15:27" itemprop="dateModified" datetime="2024-11-08T19:15:27+08:00">2024-11-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,11 +322,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/Projects/" itemprop="url" rel="index"><span itemprop="name">Projects</span></a>
+                  <a href="/categories/Programming/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Python/Pytorch/" itemprop="url" rel="index"><span itemprop="name">Pytorch</span></a>
                 </span>
             </span>
 
@@ -231,39 +345,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="hw3">HW3</h1>
-<p><span id="more"></span></p>
-<h2 id="任务分析">任务分析</h2>
+        <p><code>mask_fill</code> 是 PyTorch 中的一个函数，用于根据给定的条件（掩码）对张量中的元素进行填充。掩码是一个布尔值张量，指示哪些元素需要被填充。 <span id="more"></span> ## 函数原型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.masked_fill(<span class="built_in">input</span>, mask, value)</span><br></pre></td></tr></table></figure>
+<h3 id="参数说明">参数说明</h3>
 <ul>
-<li><p>本次作业要求对food11进行分类</p></li>
-<li><p>作业的分数细则如下：</p></li>
-<li><p>Simple: 0.50099</p></li>
-<li><p>Medium: 0.73207 - Training augmentation + longer training</p></li>
-<li><p>Strong: 0.81872 - Training augmentation + model design + extended training (+ cross-validation + ensemble)</p></li>
-<li><p>Boss: 0.88446 - Training augmentation + model design + test-time augmentation + extended training (+ cross-validation + ensemble)</p></li>
+<li><strong>input (Tensor)</strong>: 输入的张量。这个张量的形状和类型将决定输出张量的形状和类型。</li>
+<li><strong>mask (Tensor)</strong>: 一个布尔类型张量，大小与 <code>input</code> 相同。掩码中为 <code>True</code> 的位置将被填充为 <code>value</code>，而为 <code>False</code> 的位置保持不变。</li>
+<li><strong>value (scalar)</strong>: 用于填充的数值。所有掩码为 <code>True</code> 的位置会被这个值替代。</li>
 </ul>
-<h2 id="完成细节">完成细节</h2>
-<h3 id="模型">模型</h3>
+<h3 id="返回值">返回值</h3>
+<p>返回一个新的张量，其形状与输入张量 <code>input</code> 相同，掩码位置的值被 <code>value</code> 替代。</p>
+<h2 id="示例">示例</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个张量</span></span><br><span class="line">tensor = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个掩码</span></span><br><span class="line">mask = torch.tensor([<span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用mask_fill填充</span></span><br><span class="line">filled_tensor = torch.masked_fill(tensor, mask, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(filled_tensor)</span><br></pre></td></tr></table></figure>
+<h3 id="输出">输出</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensor([1, 0, 3, 0, 5])</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，<code>mask</code> 中为 <code>True</code> 的位置（即第二个和第四个位置）会被填充为 <code>0</code>，而其他位置保持不变。</p>
+<h2 id="注意事项">注意事项</h2>
 <ul>
-<li><p>resnet18，按照李沐动手学深度学习教程搭建。</p></li>
-<li><p>resnet，用了两层残差块，然后接全连接层</p></li>
+<li><code>mask</code> 张量必须与 <code>input</code> 张量的形状相同。</li>
+<li>如果 <code>mask</code> 中的元素不为布尔类型，可以先使用 <code>mask.to(torch.bool)</code> 转换为布尔类型。</li>
+<li><code>value</code> 参数可以是任意标量类型（如整数、浮点数等）。</li>
 </ul>
-<h3 id="训练设置">训练设置</h3>
+<h2 id="应用场景">应用场景</h2>
 <ul>
-<li><p>resnet中采用StepLRScheduler，训练100 epochs，前50轮学习率为3e-4，后50轮为3e-5</p></li>
-<li><p>resnet18采用余弦退火策略，200epochs，T_MAX设置为200，学习率按余弦从3e-4减小到3e-7</p></li>
-<li><p>均采用5折交叉验证</p></li>
-<li><p>resnet18只训练出四个模型</p></li>
-<li><p>batch_size都设置为64</p></li>
-<li><p>采用FocalLoss，根据resnet对各个类别的分类情况调整了alpha系数</p></li>
+<li><strong>数据预处理</strong>：在进行数据清洗或处理时，可以使用 <code>mask_fill</code> 来清除或替换特定位置的数据。</li>
+<li><strong>神经网络训练</strong>：在模型训练过程中，常常会使用掩码来忽略一些无关数据或填充缺失值。</li>
 </ul>
-<h2 id="结果">结果</h2>
-<ul>
-<li><p>resnet达到了StrongLine</p></li>
-<li><p>resnet18达到了BossLine</p></li>
-</ul>
-<p><img src="/2024/11/03/Deep-learning-Projects-Lhy-HW3/image.png"></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/HouxiongYao/Deep-Learning-Projects">完整代码在这里</a></p>
 
     </div>
 
@@ -273,7 +380,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Lhy-Projects/" rel="tag"># Lhy-Projects</a>
+              <a href="/tags/pytorch-function/" rel="tag"># pytorch-function</a>
           </div>
 
         
@@ -281,11 +388,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2024/11/03/Deep-learning-Lhy-learning-CNN/" rel="next" title=" CNN">
-       CNN <i class="fa fa-chevron-right"></i>
+    <a href="/2024/11/07/Programming-Python-Pytorch-torch-einsum/" rel="prev" title="torch.enisum">
+      <i class="fa fa-chevron-left"></i> torch.enisum
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -344,7 +451,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hw3"><span class="nav-number">1.</span> <span class="nav-text">HW3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">任务分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E7%BB%86%E8%8A%82"><span class="nav-number">1.2.</span> <span class="nav-text">完成细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">训练设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">1.3.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">返回值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number"></span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">1.</span> <span class="nav-text">输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number"></span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number"></span> <span class="nav-text">应用场景</span></a></div>
       </div>
       <!--/noindex-->
 
@@ -461,6 +568,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
