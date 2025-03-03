@@ -281,7 +281,7 @@ mjx-container[display="true"] + br {
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/18/Programming-Cpp-Chapter10-Implicit-type-conversion/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-Align-before-Fuse-Vision-and-Language-Representation-Learning-with-Momentum-Distillation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -295,7 +295,7 @@ mjx-container[display="true"] + br {
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/11/18/Programming-Cpp-Chapter10-Implicit-type-conversion/" class="post-title-link" itemprop="url">Chapter10-Implicit-type-conversion</a>
+            <a href="/2025/03/01/MD-Align-before-Fuse-Vision-and-Language-Representation-Learning-with-Momentum-Distillation/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta">
@@ -305,27 +305,7 @@ mjx-container[display="true"] + br {
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-11-18 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-18T00:00:00+08:00">2024-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
-                </span>
+              <time title="创建时间：2025-03-01 12:13:21" itemprop="dateCreated datePublished" datetime="2025-03-01T12:13:21+08:00">2025-03-01</time>
             </span>
 
           
@@ -339,11 +319,899 @@ mjx-container[display="true"] + br {
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>The process of producing a new value of some type from a value of a different type is called a <strong>conversion</strong>.</p>
-<p>Conversions do not change the value or type being converted. Instead, a new value with the desired type is created as a result of the conversion</p>
+          <h1 id="align-before-fuse-vision-and-language-representation-learning-with-momentum-distillation"><a href="zotero://select/library/items/JYX2XMMM">Align before Fuse: Vision and Language Representation Learning with Momentum Distillation</a></h1>
+<p>NeurIPS，2718次</p>
+<p><img src="/2025/03/01/MD-Align-before-Fuse-Vision-and-Language-Representation-Learning-with-Momentum-Distillation/03/01/MD-Align-before-Fuse-Vision-and-Language-Representation-Learning-with-Momentum-Distillation" alt="image-20250227170757594"></p>
+<h2 id="模型架构">模型架构</h2>
+<p>整体上，模型分为text encoder、image encoder、multimodal encoder三个部分。Momentum model是进行蒸馏的手段，即使去掉ALBEF也是完整的模型。</p>
+<h3 id="encoder">Encoder</h3>
+<p>图像encoder采用12层的ViT-B/16模型；文本encoder采用6层transformer，多模态encoder采用6层transformer，有趣的是这12层transformer就是BERT模型的12层transformer，前6层用作文本encoder，后6层用作多模态encoder。图像侧和文本侧都带有[cls] token。另外，多模态transformer采用cross attention的方式，融合图像token和文本token。</p>
+<h3 id="loss-function">Loss function</h3>
+<p>采用三种loss，然后加和。Image-text contrastive learning (ITC) on the unimodal encoders, masked language modeling (MLM) and image-text matching (ITM)。</p>
+<h4 id="itc">ITC</h4>
+<p>为了在融合之前得到更好的单模态表示而做的对比学习，借鉴MoCo的思路，ALBEF维护两个队列，分别存储最近的M个图像特征和M个文本特征。该特征是[cls] embedding经过线性变换和Normalization以后生成的。ITC中使用的loss是标准的对比损失。</p>
+<p>用softmax对原本的相似度进行平滑，之后用ground-truth y和p的cross-entropy计算，图片和文本加和后平均。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227172247363.png" alt><figcaption>image-20250227172247363</figcaption>
+</figure>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227172256613.png" alt><figcaption>image-20250227172256613</figcaption>
+</figure>
+<h4 id="mlm">MLM</h4>
+<p>Bert中的思路，对文本mask然后用交叉熵计算损失。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227172839641.png" alt><figcaption>image-20250227172839641</figcaption>
+</figure>
+<h4 id="itm">ITM</h4>
+<p>ITM是图像和文本匹配损失函数，用来预测图像和文本是否匹配。采用multimodal encoder的[cls] token来表示图文融合的特征，然后连接上FC和softmax，预测2类的概率值，表示图文对是否匹配。ALBEF还会使用ITC中的图文对比损失去挖掘hard negatives，从而增强ITM任务。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227172810838.png" alt><figcaption>image-20250227172810838</figcaption>
+</figure>
+<h3 id="momentum-distillation">Momentum Distillation</h3>
+<p>动量模型由单模态和多模态编码器的指数移动平均版本组成。</p>
+<p>图文对当中有噪声，正样本中，可能图片和文字相关性很弱。ITC中可能，负样本文字可能也与图片相符合，MLM中，替换的文字可能比原本的文字能更好地描述图片，但 one-hot ground truth忽视这样的相关性，惩罚所有的负样本。</p>
+<p>利用<strong>动量模型</strong>（参数为历史模型的指数移动平均）生成更可靠的伪标签（软标签），指导当前模型训练，从而减少对噪声标签的依赖。动量模型对同一输入生成预测分布（软标签），作为监督信号。</p>
+<p>训练时训练base model使其与动量模型中的预测匹配，ITC中，直接使用动量模型产生的相似度。</p>
+<p>原始任务loss加上预测目标和伪目标散度的方式来重新定义原始任务损失。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227173950258.png" alt><figcaption>image-20250227173950258</figcaption>
+</figure>
+<h2 id="结果">结果</h2>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227174657416.png" alt><figcaption>image-20250227174657416</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-BLIP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/01/MD-BLIP/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-01 12:13:21" itemprop="dateCreated datePublished" datetime="2025-03-01T12:13:21+08:00">2025-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="blip-bootstrapping-language-image-pre-training-for-unified-vision-language-understanding-and-generation"><a href="zotero://select/library/items/EDGHTT2W">BLIP: Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation</a></h1>
+<p>PLMR，4332</p>
+<h2 id="method">Method</h2>
+<h3 id="model-architecture">Model Architecture</h3>
+<p><strong>Multimodal mixture of encoder-decoder (MED)</strong></p>
+<ul>
+<li>Unimodal encoder: 图像使用ViT，文本使用Bert</li>
+<li>Image-grounded text encoder：通过在文本编码器的每个 transformer 块的自注意力 （SA） 层和前馈网络 （FFN） 之间插入一个额外的交叉注意力 （CA） 层来注入视觉信息。</li>
+<li>Image-grounded text decoder：将Image-grounded text encoder中的bidirectional self-attention layers替换为causal self-attention layers。</li>
+</ul>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250228165230354.png" alt><figcaption>image-20250228165230354</figcaption>
+</figure>
+<h3 id="pre-training-objectives">Pre-training Objectives</h3>
+<p>三个预训练目标，两个understanding based，一个generation based。每一对图文，需要经过一次图像encoder和三次text encoder。</p>
+<ul>
+<li><p>Image-Text Contrastive Loss (ITC)</p>
+<p>使用了ALBEF中的思路，用ITC加强图文对应的语义信息，并且使用动量蒸馏模型。</p></li>
+<li><p>Image-Text Matching Loss (ITM)</p>
+<p>同样使用了ALBEF进行ITM的思路。</p></li>
+<li><p>Language Modeling Loss (LM)</p>
+<p>使用了image-grounded text decoder，生成对图片的文本描述。优化了交叉熵损失，训练模型以自回归方式最大化文本的可能性。计算损失时，应用 0.1 的标签平滑。</p></li>
+</ul>
+<p>为了提高效率，text encoder 和text decoder之间除开SA layers，权重全部共享，因为两个任务的区别主要在于SA layers。</p>
+<h3 id="capfilt">CapFilt</h3>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250228173547049.png" alt><figcaption>image-20250228173547049</figcaption>
+</figure>
+<p>Filter和Captioner从预训练的MED中初始化，然后在COCO上微调。</p>
+<p>Captioner是image-grounded text decoder，使用前文的LM objective微调，学习如何生成描述。Filter是一个image-grounded text encoder，使用前文的ITC和ITM去学习图文是否匹配。</p>
+<h2 id="experiments-and-discussions">Experiments and Discussions</h2>
+<h3 id="预训练设置与数据集">预训练设置与数据集</h3>
+<table>
+<thead>
+<tr class="header">
+<th>配置项</th>
+<th>参数细节</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>视觉编码器</td>
+<td>ViT-B/16 (224x224输入)</td>
+</tr>
+<tr class="even">
+<td>文本编码器</td>
+<td>BERT-base (12层, 768隐藏维度)</td>
+</tr>
+<tr class="odd">
+<td>预训练总数据量</td>
+<td>134M (12M清洗数据 + 122M噪声数据)</td>
+</tr>
+<tr class="even">
+<td>训练硬件</td>
+<td>64x NVIDIA A100 (400 GPU hours)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="核心实验结果">核心实验结果</h3>
+<table>
+<thead>
+<tr class="header">
+<th>任务类型</th>
+<th>评估指标</th>
+<th>BLIP</th>
+<th>CLIP</th>
+<th>ALBEF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>图文检索</td>
+<td>COCO R@1</td>
+<td>76.8%</td>
+<td>68.3%</td>
+<td>72.6%</td>
+</tr>
+<tr class="even">
+<td>视觉问答</td>
+<td>VQA Acc</td>
+<td>77.3%</td>
+<td>-</td>
+<td>75.2%</td>
+</tr>
+<tr class="odd">
+<td>图像描述生成</td>
+<td>CIDEr</td>
+<td>135.2</td>
+<td>-</td>
+<td>121.8</td>
+</tr>
+</tbody>
+</table>
+<h3 id="消融实验分析">消融实验分析</h3>
+<table>
+<thead>
+<tr class="header">
+<th>消融组件</th>
+<th>图文检索R@1</th>
+<th>生成CIDEr</th>
+<th>结论总结</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>完整模型</td>
+<td>76.8%</td>
+<td>135.2</td>
+<td>基准性能</td>
+</tr>
+<tr class="even">
+<td>移除CapFilt</td>
+<td>68.5%↓</td>
+<td>120.6↓</td>
+<td>数据清洗提升8.3%/14.6%</td>
+</tr>
+<tr class="odd">
+<td>仅用单模态编码器</td>
+<td>71.2%↓</td>
+<td>-</td>
+<td>跨模态融合贡献5.6%↑</td>
+</tr>
+</tbody>
+</table>
+<h3 id="跨领域泛化表现">跨领域泛化表现</h3>
+<table>
+<thead>
+<tr class="header">
+<th>测试领域</th>
+<th>数据集</th>
+<th>R@1</th>
+<th>相对CLIP提升</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>医学影像</td>
+<td>COVID-Xray</td>
+<td>63.2%</td>
+<td>+11.4%↑</td>
+</tr>
+<tr class="even">
+<td>艺术创作</td>
+<td>ArtEmis</td>
+<td>58.7%</td>
+<td>+9.8%↑</td>
+</tr>
+<tr class="odd">
+<td>工业质检</td>
+<td>PCB-Text</td>
+<td>51.3%</td>
+<td>+7.6%↑</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-Flamingo-a-Visual-Language-Model-for-Few-Shot-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/01/MD-Flamingo-a-Visual-Language-Model-for-Few-Shot-Learning/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-01 12:13:21" itemprop="dateCreated datePublished" datetime="2025-03-01T12:13:21+08:00">2025-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="flamingo-a-visual-language-model-for-few-shot-learning"><a href="zotero://select/library/items/MG2DVLZP">Flamingo: a Visual Language Model for Few-Shot Learning</a></h1>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250214165857225.png" alt><figcaption>image-20250214165857225</figcaption>
+</figure>
+<p>发布于NeurIPS。</p>
+<p>三大创新点：</p>
+<ul>
+<li>bridge powerful pretrained vision-only and language-only models.</li>
+<li>handle sequences of arbitrarily interleaved visual and textual data.</li>
+<li>seamlessly ingest images or videos as inputs.</li>
+</ul>
+<h1 id="模型能力">模型能力</h1>
+<ol type="1">
+<li>多模态输入处理能力</li>
+</ol>
+<p>Flamingo 的核心突破是能够处理图像/视频与文本交错的多模态输入。例如：</p>
+<blockquote>
+<p>​ [图片] + "这是什么动物？" → "斑马" ​ [视频] + "发生了什么？" → "一只猫跳上桌子"</p>
+</blockquote>
+<p>模型通过观察这些图文交错的示例，直接生成答案。</p>
+<ol start="2" type="1">
+<li>结合预训练视觉与语言模型 Flamingo 的架构整合了两种预训练模型：</li>
+</ol>
+<p>视觉模型：负责提取图像/视频的语义特征（例如 CLIP、ViT）。 语言模型（LM）：负责基于视觉特征生成文本（例如 GPT-3）。 关键设计：通过冻结预训练参数（不更新权重）并添加轻量级适配层，将两者连接，既保留预训练知识，又实现多模态交互。</p>
+<ol start="3" type="1">
+<li>高效处理高分辨率图像/视频 采用 Perceiver 架构，将高分辨率视觉输入压缩为固定数量的特征向量，解决了传统模型因分辨率高导致计算量爆炸的问题。</li>
+</ol>
+<h1 id="模型架构">模型架构</h1>
+<p><img src="/2025/03/01/MD-Flamingo-a-Visual-Language-Model-for-Few-Shot-Learning/03/01/MD-Flamingo-a-Visual-Language-Model-for-Few-Shot-Learning" alt="image-20250225201536690" style="zoom: 67%;"></p>
+<ol type="1">
+<li><p>整体框架</p>
+<p>Flamingo 的架构基于 <strong>预训练视觉编码器 + 预训练语言模型 + 桥接模块</strong> 的三明治结构：</p>
+<ul>
+<li><strong>视觉编码器</strong>：采用冻结的 NFNet（F6 版本），通过对比学习预训练，提取图像/视频的时空特征。</li>
+<li><strong>语言模型</strong>：基于 Chinchilla（1.4B/7B/70B 参数）的冻结 Transformer 解码器。</li>
+<li><strong>桥接模块</strong>：包含 <strong>Perceiver Resampler</strong> 和 <strong>门控交叉注意力层</strong>，实现视觉到语言的语义映射。</li>
+</ul>
+<p>Perveiver从Vision Encoder接收时空特征，输出一个定长的vision tokens，冻结的LM利用交叉注意力交错使用tokens进行next token预测任务</p></li>
+<li><p>核心模块</p>
+<ol type="1">
+<li><p>Vision Encoder</p>
+<ol type="1">
+<li><strong>模型选择</strong>：NFNet-F6</li>
+<li><strong>预训练方式</strong>：对比学习（CLIP风格），目标函数为图文匹配，使用two-term contrastive loss</li>
+<li><strong>关键技术</strong>
+<ol type="1">
+<li><strong>视频数据处理</strong>：1FPS抽帧 → 单帧独立编码 → 添加可学习时间嵌入</li>
+<li><strong>特征输出</strong>：输出2D/3D空间特征网格（例如 2048维 × 14×14），最终都拉平了</li>
+</ol></li>
+</ol></li>
+<li><p>Perceiver Resampler</p>
+<p><img src="/2025/03/01/MD-Flamingo-a-Visual-Language-Model-for-Few-Shot-Learning/03/01/MD-Flamingo-a-Visual-Language-Model-for-Few-Shot-Learning" alt="image-20250225212011711" style="zoom:80%;"></p>
+<ol type="1">
+<li>接收可变长度的feature为输入，将其转为固定长度（64）</li>
+<li>处理流程
+<ol type="1">
+<li><strong>Latent Queries</strong>：64个可学习查询向量（长度=视觉特征维度）</li>
+<li><strong>Transformer Cross-Attention</strong>：查询向量与视觉特征交互</li>
+<li><strong>Self-Attention</strong>：查询向量间信息聚合</li>
+</ol></li>
+</ol></li>
+<li><p>Conditioning frozen language models on visual representations</p></li>
+</ol>
+<p>Conditioninig指在visual representation之下。</p>
+<p>下图是Interleaving new GATED XATTN-DENSE layers within a frozen pretrained LM，冻结的LLMblock前加入了一个GATED XATTN-DENSE block，使用tanh-gating是为了保证初始化时条件模型和原始语言模型有相同的结果。GATED XATTEN-DENSE将从头开始训练，与冻结的LLM交错拜访，vision信息x只用于GATED XATTN-DENSE block的训练。<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250225212804372.png" alt="image-20250225212804372"></p></li>
+<li><p>Multi-visual input support: per-image/video attention masking</p>
+<p>掩码full text-to-image cross-attention matrix, 以便限制model在每个token能看见的visual token。</p>
+<p><code>&lt;img1&gt; Text1 &lt;img2&gt; Text2</code>如果这是输入序列，那么Text2就不能看见img1的token，必须对应。</p>
+<h1 id="结果">结果</h1>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227195351479.png" alt><figcaption>image-20250227195351479</figcaption>
+</figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-Learning-Transferable-Visual-Models-From-Natural-Language-Supervision/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/01/MD-Learning-Transferable-Visual-Models-From-Natural-Language-Supervision/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-01 12:13:21" itemprop="dateCreated datePublished" datetime="2025-03-01T12:13:21+08:00">2025-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="learning-transferable-visual-models-from-natural-language-supervision"><a href="zotero://select/library/items/V25MS4S3">Learning Transferable Visual Models From Natural Language Supervision</a></h1>
+<p>29438次引用，<em>Proceedings of the 38th International Conference on Machine Learning</em>, PMLR 139:8748-8763, 2021.</p>
+<p>摘要部分提到，现有的计算机视觉系统通常通过预定义的固定类别进行监督训练，限制了其泛化能力。CLIP通过从自然语言监督中学习，使用4亿个（图像，文本）对进行预训练，实现了零样本迁移到多种下游任务，效果与全监督模型相当。Contrastive Language Image Pre-training，CLIP。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250226152948794.png" alt><figcaption>image-20250226152948794</figcaption>
+</figure>
+<h1 id="approach">Approach</h1>
+<h2 id="数据收集与处理">数据收集与处理</h2>
+<ul>
+<li>数据集构建：
+<ul>
+<li>从互联网抓取4亿个（图像-文本）对，构成<strong>WebImageText (WIT)</strong>数据集。</li>
+<li>通过500,000个搜索词（覆盖物体、场景、动作等）确保数据多样性。</li>
+<li>过滤低质量数据：移除重复样本、非英语文本、含攻击性内容的图像。</li>
+</ul></li>
+<li>关键设计：
+<ul>
+<li><strong>弱监督对齐</strong>：文本与图像的关系是弱相关（如网页图片与周围文本），而非严格对齐（如COCO的详细区域描述）。</li>
+</ul></li>
+</ul>
+<h2 id="模型架构">模型架构</h2>
+<p>有一批N（image，text）pairs，预测真正匹配的图像-文本对。</p>
+<p>训练一个image encoder和一个text encoder，最大化N个正确配对的cosine similarity，最小化<span class="math inline">\(N^2-N\)</span>个错误配对，对相似性分数进行了symmetric cross entropy loss</p>
+<table>
+<thead>
+<tr class="header">
+<th>组件</th>
+<th>结构细节</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>图像编码器</strong></td>
+<td>ResNet变体（如ResNet-50）或Vision Transformer（ViT，patch size 14x14）</td>
+</tr>
+<tr class="even">
+<td><strong>文本编码器</strong></td>
+<td>Transformer（最大63M参数，12层，512隐藏层，8头注意力）</td>
+</tr>
+<tr class="odd">
+<td><strong>特征映射</strong></td>
+<td>图像/文本特征通过线性投影层映射到共享嵌入空间（维度512或768）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>对比学习目标</strong></p>
+<ul>
+<li><p><strong>损失函数</strong>：</p>
+<ul>
+<li>对称对比损失（Symmetric Contrastive Loss）： <span class="math display">\[
+\mathcal{L}_{\text{contrastive}} = -\frac{1}{2N} \left( \sum_{i=1}^N \log \frac{e^{\text{sim}(I_i, T_i)/\tau}}{\sum_{j=1}^N e^{\text{sim}(I_i, T_j)/\tau}} + \sum_{i=1}^N \log \frac{e^{\text{sim}(T_i, I_i)/\tau}}{\sum_{j=1}^N e^{\text{sim}(T_j, I_i)/\tau}} \right)
+\]</span></li>
+<li>其中：
+<ul>
+<li><span class="math inline">\(\text{sim}(I, T)\)</span>：图像和文本特征的余弦相似度<br>
+</li>
+<li><span class="math inline">\(\tau\)</span>：可学习的温度系数(设为可学习的一个标量)</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="zero-transfer">Zero-Transfer</h1>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250226152948794.png" alt><figcaption>image-20250226152948794</figcaption>
+</figure>
+<p>图中左侧是zero-transfer的推理部分，对感兴趣的部分进行prompt engineering，例如认为图片中有cat、dog、bird、plane，就构建一个句子A photo of a cat dog bird plane，经过text embedding，会构建一个4维向量，然后这个向量与image encoder提取得到的特征计算cosine similarity，经过一个softmax分类头，得出最后的标签。</p>
+<p>下图是CLIP和visual N-Grams的对比，CLIP没有用ImageNet中的任何一张图片进行训练。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227115502197.png" alt><figcaption>image-20250227115502197</figcaption>
+</figure>
+<h1 id="prompt-engineering">Prompt Engineering</h1>
+<p><strong>Issue：</strong></p>
+<ul>
+<li>Polysemy：提示词可能具有歧义(例如boxer)。</li>
+<li>Describition：对图片的描述可能是一个句子。</li>
+</ul>
+<p>作者使用一个模板“A photo of a {label}”，若是提前知道信息，将信息加入到prompt，对zero-shot很有用。多用一些prompt做ensemble，效果会很好。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250227125034170.png" alt><figcaption>image-20250227125034170</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-Multimodal-Machine-Learning-A-Survey-and-Taxonomy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/01/MD-Multimodal-Machine-Learning-A-Survey-and-Taxonomy/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-01 12:13:21" itemprop="dateCreated datePublished" datetime="2025-03-01T12:13:21+08:00">2025-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="multimodal-machine-learning-a-survey-and-taxonomy"><a href="zotero://select/library/items/YQ3H2HTZ">Multimodal Machine Learning: A Survey and Taxonomy</a></h1>
+<p>IEEE transactions on pattern analysis and machine intelligence, 2018,引用3890</p>
+<h1 id="多模态的五大核心挑战"><strong>多模态的五大核心挑战</strong></h1>
+<h2 id="表示representation"><strong>表示（Representation）</strong></h2>
+<ul>
+<li><p><strong>目标</strong>：将异构数据（如图像、文本、音频）转换为统一或协调的表示形式。</p></li>
+<li><p>方法：</p>
+<ul>
+<li><p><strong>联合表示（Joint）</strong>：将多模态数据映射到同一空间（如神经网络、深度玻尔兹曼机）。</p></li>
+<li><p><strong>协调表示（Coordinated）</strong>：不同模态独立映射，但通过相似性约束（如距离最小化、相关性最大化）协调。</p>
+<figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250226133825056.png" alt><figcaption>image-20250226133825056</figcaption>
+</figure></li>
+</ul></li>
+<li><p><strong>应用</strong>：语音识别、情感分析、跨模态检索。</p></li>
+</ul>
+<h2 id="翻译translation"><strong>翻译（Translation)</strong></h2>
+<ul>
+<li><p><strong>目标</strong>：将一种模态的信息转换为另一种模态（如图像生成描述、文本生成图像）。</p></li>
+<li><p>方法：</p>
+<ul>
+<li><strong>基于示例（Example-based）</strong>：通过检索或组合现有示例生成结果。</li>
+<li><strong>生成式（Generative）</strong>：使用编码器-解码器框架（如RNN、LSTM、注意力机制）生成新内容。</li>
+</ul></li>
+<li><p><strong>挑战</strong>：评估困难（如主观性、多正确答案），常用BLEU、ROUGE等指标。</p></li>
+</ul>
+<h2 id="对齐alignment"><strong>对齐（Alignment）</strong></h2>
+<ul>
+<li><p><strong>目标</strong>：找到不同模态子元素间的对应关系（如视频帧与文本描述的对齐）。</p></li>
+<li><p>方法：</p>
+<ul>
+<li><strong>显式对齐</strong>：动态时间规整（DTW）、图模型（HMM、CRF）。</li>
+<li><strong>隐式对齐</strong>：注意力机制（Attention）、神经网络隐式学习对齐。</li>
+</ul></li>
+<li><p><strong>应用</strong>：视频-文本对齐、视觉问答（VQA）。</p></li>
+</ul>
+<h2 id="融合fusion"><strong>融合（Fusion）</strong></h2>
+<ul>
+<li><p><strong>目标</strong>：整合多模态信息进行预测（如情感识别结合语音和面部表情）。</p></li>
+<li><p>方法：</p>
+<ul>
+<li><strong>模型无关</strong>：早期融合（特征拼接）、晚期融合（决策加权）、混合融合。</li>
+<li><strong>基于模型</strong>：多核学习（MKL）、图模型（CRF）、神经网络（LSTM、多模态RNN）。</li>
+</ul></li>
+<li><p><strong>挑战</strong>：处理噪声、模态缺失、时序不一致性。</p></li>
+</ul>
+<h2 id="协同学习co-learning"><strong>协同学习（Co-learning）</strong></h2>
+<ul>
+<li><p><strong>目标</strong>：利用资源丰富的模态辅助资源稀缺的模态学习。</p></li>
+<li><p>方法：</p>
+<ul>
+<li><strong>并行数据</strong>：协同训练（Co-training）、迁移学习。</li>
+</ul></li>
+<li><p><strong>非并行数据</strong>：零样本学习（ZSL）、概念嵌入（Conceptual Grounding）。</p>
+<ul>
+<li><strong>混合数据</strong>：通过中间模态桥接（如多语言图像描述）。</li>
+</ul></li>
+<li><p><strong>应用</strong>：跨模态检索、少样本学习。</p></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/01/MD-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-01 12:13:21" itemprop="dateCreated datePublished" datetime="2025-03-01T12:13:21+08:00">2025-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/%E6%AD%A3%E5%88%99.png" alt><figcaption>正则表达式</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/01/MD-linux-study-Liunx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/01/MD-linux-study-Liunx/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-01 12:11:14 / 修改时间：12:21:06" itemprop="dateCreated datePublished" datetime="2025-03-01T12:11:14+08:00">2025-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure>
+<img src="https://houxiong-pictures.oss-cn-beijing.aliyuncs.com/image-20250301121025965.png" alt><figcaption>image-20250301121025965</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/26/Group-meeting-%E7%BB%84%E4%BC%9A%E5%B7%A5%E4%BD%9C%E6%B1%87%E6%8A%A5%E6%A6%82%E8%A6%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/26/Group-meeting-%E7%BB%84%E4%BC%9A%E5%B7%A5%E4%BD%9C%E6%B1%87%E6%8A%A5%E6%A6%82%E8%A6%81/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-26 20:26:22 / 修改时间：21:20:55" itemprop="dateCreated datePublished" datetime="2024-12-26T20:26:22+08:00">2024-12-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><strong>确定毕设题目</strong>： 精密零部件加工领域知识的表示学习技术： 为了从大量精密零部件加工数据中学习出有用的特征和模式，对材料属性、加工工艺、设备特性等数据进行统一的语义映射和表征学习，采用Transformer等技术进行多模态数据的统一表征学习，并利用图神经网络进行关系建模。</li>
+</ul>
+<p>根据毕设题目展开学习： # 学习图网络相关知识 - 学习cs224w的部分课程内容 - Node embedding - 如何将图作为向量嵌入表示 - Node embedding相关算法(random walk embedding, node2vec) - GNN基础 - Graph Convolutional Networks - aggregation function,loss,train nodes, generate embeddings(even for those the model never trained on) - GCNs subsume CNNs - General Perspective on GNNs - Message - Layer Connectivity - Graph Augmentation: Feature augmentation, structure augmentation - Learning Objective: Supervised/Unsupervised, Node/Edge/Graph level objectives. - Train \ valid \ test - GNN中训练集的划分和其它神经网络有很大区别，普通神经网络不会因为一个样本而影响到另一个样本的预测，而GNN中会，因为每个样本都是一个node，关联整个图。 - Linklevel trick <img src="/2024/12/26/Group-meeting-%E7%BB%84%E4%BC%9A%E5%B7%A5%E4%BD%9C%E6%B1%87%E6%8A%A5%E6%A6%82%E8%A6%81/image-20241226-205121.png"> - Theory of Graph Neural Networks - GIN和 WL-Kernel <img src="/2024/12/26/Group-meeting-%E7%BB%84%E4%BC%9A%E5%B7%A5%E4%BD%9C%E6%B1%87%E6%8A%A5%E6%A6%82%E8%A6%81/image-20241226-210037.png"> - The most expressive GNNs should map subtrees to node structure injectively. - GNN 不是越深越好，因为感受野不会扩大反而会因为深度减小。 # 学习了transformer的基本架构</p>
+<ul>
+<li>Attention 机制</li>
+<li>Encoder and Decoder（Masked self-attention）架构</li>
+<li>Autoregressive Model</li>
+<li>cross attention</li>
+<li>HW4 half hw5</li>
+</ul>
+<h1 id="将来一周的打算">将来一周的打算</h1>
+<ul>
+<li>学习python爬虫（用于爬取毕设论文数据集）</li>
+<li>学习cs224w的剩余课程内容</li>
+<li>阅读毕设相关论文</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/22/Deep-learning-Lhy-learning-Domain-Adaptation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Houxiong">
+      <meta itemprop="description" content="To learn, To copy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="熊熊学习乐园">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/22/Deep-learning-Lhy-learning-Domain-Adaptation/" class="post-title-link" itemprop="url">Domain-Adaptation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-22 00:00:00 / 修改时间：15:10:44" itemprop="dateCreated datePublished" datetime="2024-12-22T00:00:00+08:00">2024-12-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>Domain shift</strong>: Training and testing data have different distributions. - case1：训练资料和测试资料可能有差别 - case2：训练资料和测试资料的分布可能不同 - case3：训练资料和测试资料的对应关系可能不同。 <img src="/2024/12/22/Deep-learning-Lhy-learning-Domain-Adaptation/image-20241222-144712.png"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/11/18/Programming-Cpp-Chapter10-Implicit-type-conversion/#more" rel="contents">
+              <a class="btn" href="/2024/12/22/Deep-learning-Lhy-learning-Domain-Adaptation/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -367,7 +1235,7 @@ mjx-container[display="true"] + br {
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/18/Programming-Cpp-Chapter11-Function-Overloading-and-Function-Templates/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/22/Deep-learning-Lhy-learning-Reinforcement-Learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -381,7 +1249,7 @@ mjx-container[display="true"] + br {
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/11/18/Programming-Cpp-Chapter11-Function-Overloading-and-Function-Templates/" class="post-title-link" itemprop="url">Chapter11-Function-Overloading-and-Function-Templates</a>
+            <a href="/2024/12/22/Deep-learning-Lhy-learning-Reinforcement-Learning/" class="post-title-link" itemprop="url">Reinforcement-Learning</a>
         </h2>
 
         <div class="post-meta">
@@ -390,28 +1258,9 @@ mjx-container[display="true"] + br {
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-11-18 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-18T00:00:00+08:00">2024-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
-                </span>
+              <time title="创建时间：2024-12-22 00:00:00 / 修改时间：18:22:16" itemprop="dateCreated datePublished" datetime="2024-12-22T00:00:00+08:00">2024-12-22</time>
             </span>
 
           
@@ -425,701 +1274,11 @@ mjx-container[display="true"] + br {
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Functions can be overloaded so long as each overloaded function can be differentiated by the compiler. If an overloaded function can not be differentiated, a compile error will result.</p>
+          <h1 id="what-is-rl">What is RL</h1>
+<p><img src="/2024/12/22/Deep-learning-Lhy-learning-Reinforcement-Learning/image-20241222-160818.png"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/11/18/Programming-Cpp-Chapter11-Function-Overloading-and-Function-Templates/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/17/Deep-learning-Lhy-learning-Self-Supervised-Learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/17/Deep-learning-Lhy-learning-Self-Supervised-Learning/" class="post-title-link" itemprop="url">Self-Supervised Learning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-17 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-17T00:00:00+08:00">2024-11-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/Lhy-learning/" itemprop="url" rel="index"><span itemprop="name">Lhy-learning</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="self-supervised-learning">Self-supervised Learning</h2>
-<p>Self-supervised learning is a form of unsupervised learning. In the example below, we split the input <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewbox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"/></g></g></g></svg></mjx-container></span> into two parts: <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.922ex" height="1.742ex" role="img" focusable="false" viewbox="0 -759 849.5 770"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"/></g><g data-mml-node="mo" transform="translate(605,363) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"/></g></g></g></g></svg></mjx-container></span> and <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.362ex" height="1.742ex" role="img" focusable="false" viewbox="0 -759 1043.9 770"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"/></g><g data-mml-node="mo" transform="translate(605,363) scale(0.707)"><g data-c="2033"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"/><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z" transform="translate(275,0)"/></g></g></g></g></g></svg></mjx-container></span>. <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.922ex" height="1.742ex" role="img" focusable="false" viewbox="0 -759 849.5 770"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"/></g><g data-mml-node="mo" transform="translate(605,363) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"/></g></g></g></g></svg></mjx-container></span> serves as the input to the model, while <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.362ex" height="1.742ex" role="img" focusable="false" viewbox="0 -759 1043.9 770"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"/></g><g data-mml-node="mo" transform="translate(605,363) scale(0.707)"><g data-c="2033"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"/><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z" transform="translate(275,0)"/></g></g></g></g></g></svg></mjx-container></span> contains the remaining information, which the model uses to learn the label information. <img src="/2024/11/17/Deep-learning-Lhy-learning-Self-Supervised-Learning/image-20241117-154017.png"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/17/Deep-learning-Lhy-learning-Self-Supervised-Learning/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/13/Deep-learning-Lhy-learning-GAN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/13/Deep-learning-Lhy-learning-GAN/" class="post-title-link" itemprop="url">GAN</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-13T00:00:00+08:00">2024-11-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/Lhy-learning/" itemprop="url" rel="index"><span itemprop="name">Lhy-learning</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="network-as-generator">Network as Generator</h1>
-<p>Compared to a traditional neural network, a generator network takes a simple distribution as input and outputs a distribution.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/13/Deep-learning-Lhy-learning-GAN/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/11/Deep-learning-Base-Knowledge-AM-Softmax/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/11/Deep-learning-Base-Knowledge-AM-Softmax/" class="post-title-link" itemprop="url">AM-Softmax</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-11T00:00:00+08:00">2024-11-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/Base-Knowledge/" itemprop="url" rel="index"><span itemprop="name">Base-Knowledge</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="softmax-vs-a-softmax-loss">Softmax vs A-softmax Loss</h1>
-<p>Softmax loss is typically good at optimizing the inter-class difference (separating different classes), but not good at reducing the intra-class variation (making features of the same class compact). Additive Margin Softmax is a novel and more interpretable way to import the angular margin into the softmax loss.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/11/Deep-learning-Base-Knowledge-AM-Softmax/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/11/Programming-Cpp-chapter9-Error-detection-and-Handling/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/11/Programming-Cpp-chapter9-Error-detection-and-Handling/" class="post-title-link" itemprop="url">Error-detection-and-Handling</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-11T00:00:00+08:00">2024-11-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>If we intend to run our program many times, it's necessary for us to do test.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/11/Programming-Cpp-chapter9-Error-detection-and-Handling/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/09/Deep-learning-Lhy-learning-%E5%90%84%E7%A7%8D%E5%90%84%E6%A0%B7%E7%9A%84Self-Attention/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/09/Deep-learning-Lhy-learning-%E5%90%84%E7%A7%8D%E5%90%84%E6%A0%B7%E7%9A%84Self-Attention/" class="post-title-link" itemprop="url">各种各样的Self-Attention</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-09 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-09T00:00:00+08:00">2024-11-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/Lhy-learning/" itemprop="url" rel="index"><span itemprop="name">Lhy-learning</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>介绍各种各样的自注意力机制</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/09/Deep-learning-Lhy-learning-%E5%90%84%E7%A7%8D%E5%90%84%E6%A0%B7%E7%9A%84Self-Attention/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/07/Programming-Python-Pytorch-tensor-masked-fill/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/07/Programming-Python-Pytorch-tensor-masked-fill/" class="post-title-link" itemprop="url">tensor.masked_fill</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-07T00:00:00+08:00">2024-11-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Python/Pytorch/" itemprop="url" rel="index"><span itemprop="name">Pytorch</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><code>mask_fill</code> 是 PyTorch 中的一个函数，用于根据给定的条件（掩码）对张量中的元素进行填充。掩码是一个布尔值张量，指示哪些元素需要被填充。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/07/Programming-Python-Pytorch-tensor-masked-fill/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/07/Programming-Python-Pytorch-torch-einsum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/07/Programming-Python-Pytorch-torch-einsum/" class="post-title-link" itemprop="url">torch.enisum</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-07T00:00:00+08:00">2024-11-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Python/Pytorch/" itemprop="url" rel="index"><span itemprop="name">Pytorch</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>简结的矩阵运算方法</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/07/Programming-Python-Pytorch-torch-einsum/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/06/Deep-learning-PaperReading-Conformer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Houxiong">
-      <meta itemprop="description" content="To learn, To copy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="熊熊学习乐园">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/06/Deep-learning-PaperReading-Conformer/" class="post-title-link" itemprop="url">Conformer</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-06 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-06T00:00:00+08:00">2024-11-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-19 14:53:09" itemprop="dateModified" datetime="2024-11-19T14:53:09+08:00">2024-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index"><span itemprop="name">Deep-learning</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/PaperReading/" itemprop="url" rel="index"><span itemprop="name">PaperReading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文记录阅读Conformer的笔记，以此来达成李宏毅2022深度学习HW4的strong line</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/06/Deep-learning-PaperReading-Conformer/#more" rel="contents">
+              <a class="btn" href="/2024/12/22/Deep-learning-Lhy-learning-Reinforcement-Learning/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1142,7 +1301,7 @@ mjx-container[display="true"] + br {
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1210,20 +1369,20 @@ mjx-container[display="true"] + br {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1250,7 +1409,7 @@ mjx-container[display="true"] + br {
 <div class="copyright">
   
   &copy; 2024-11 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

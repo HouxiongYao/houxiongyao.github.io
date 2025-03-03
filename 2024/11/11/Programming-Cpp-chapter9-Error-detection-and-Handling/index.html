@@ -426,9 +426,9 @@ mjx-container[display="true"] + br {
 <p>Updated getDouble(): <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">getDouble</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) <span class="comment">// Loop until user enters a valid input</span></span><br><span class="line">    {</span><br><span class="line">        std::cout &lt;&lt; <span class="string">"Enter a decimal number: "</span>;</span><br><span class="line">        <span class="type">double</span> x{};</span><br><span class="line">        std::cin &gt;&gt; x;</span><br><span class="line"></span><br><span class="line">        <span class="type">bool</span> success { std::cin }; <span class="comment">// Remember whether we had a successful extraction</span></span><br><span class="line">        std::cin.<span class="built_in">clear</span>();          <span class="comment">// Put us back in 'normal' operation mode (in case we failed)</span></span><br><span class="line">        <span class="built_in">ignoreLine</span>();              <span class="comment">// Ignore any additional input on this line (regardless)</span></span><br><span class="line">        <span class="keyword">if</span> (success)               <span class="comment">// If we actually extracted a value</span></span><br><span class="line">            <span class="keyword">return</span> x;              <span class="comment">// Return it (otherwise, we go back to top of loop)</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
 <h4 id="checking-for-eof">Checking for EOF</h4>
 <ul>
-<li>In C++, EOF is an error state, not a character. Different OSes have special character combinations that are treated as a “user-entered EOF request”. These are sometimes called “EOF characters”.</li>
+<li><p>In C++, EOF is an error state, not a character. Different OSes have special character combinations that are treated as a “user-entered EOF request”. These are sometimes called “EOF characters”.</p></li>
 <li><p>std::cin can generate an EOF in certain cases -- most commonly when the user enters a special key combination for their OS. When extracting data to std::cin and the user enters an EOF character, the behavior is OS-specific. Here’s what typically happens:</p></li>
-<li>If the EOF is not the first character of input: All input prior to the EOF will be flushed, and the EOF character is ignored. On Windows, any characters entered after the EOF are ignored, except for the newline.</li>
+<li><p>If the EOF is not the first character of input: All input prior to the EOF will be flushed, and the EOF character is ignored. On Windows, any characters entered after the EOF are ignored, except for the newline.</p></li>
 <li><p>If the EOF is the first character entered: The EOF error will be set. The input stream may (or may not) be disconnected. <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;limits&gt;</span> <span class="comment">// for std::numeric_limits</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ignoreLine</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    std::cin.<span class="built_in">ignore</span>(std::numeric_limits&lt;std::streamsize&gt;::<span class="built_in">max</span>(), <span class="string">'\n'</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns true if extraction failed, false otherwise</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">clearFailedExtraction</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="comment">// Check for failed extraction</span></span><br><span class="line">    <span class="keyword">if</span> (!std::cin) <span class="comment">// If the previous extraction failed</span></span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">if</span> (std::cin.<span class="built_in">eof</span>()) <span class="comment">// If the user entered an EOF</span></span><br><span class="line">        {</span><br><span class="line">            std::<span class="built_in">exit</span>(<span class="number">0</span>); <span class="comment">// Shut down the program now</span></span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Let's handle the failure</span></span><br><span class="line">        std::cin.<span class="built_in">clear</span>(); <span class="comment">// Put us back in 'normal' operation mode</span></span><br><span class="line">        <span class="built_in">ignoreLine</span>();     <span class="comment">// And remove the bad input</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p></li>
 </ul>
 <h3 id="error-case-4-extraction-succeeds-but-the-user-overflows-a-numeric-value">Error case 4: Extraction succeeds but the user overflows a numeric value</h3>
@@ -554,20 +554,20 @@ mjx-container[display="true"] + br {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -594,7 +594,7 @@ mjx-container[display="true"] + br {
 <div class="copyright">
   
   &copy; 2024-11 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
